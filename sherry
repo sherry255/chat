@@ -1,0 +1,15 @@
+import json
+import time
+with open('/Users/sherry/PycharmProjects/chat/users.json', 'r') as f:
+    data = json.load(f)
+ddic=dict()
+for i in range(28):
+    ddic[data[i]['id']]= data[i]['name']
+for key in ddic.keys():
+    print (key,ddic[key])
+with open('/Users/sherry/PycharmProjects/chat/2015-10-15.json', 'r') as f1:
+    d2 = json.load(f1)
+for i in range(len(d2)):
+    d2[i]['user']=ddic[d2[i]['user']]
+    print (time.ctime(float(d2[i]['ts'])),':')
+    print (d2[i]['user'],':',d2[i]['text'])
