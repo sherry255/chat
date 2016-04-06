@@ -1,15 +1,42 @@
-import json
-import time
-with open('/Users/sherry/PycharmProjects/chat/users.json', 'r') as f:
-    data = json.load(f)
-ddic=dict()
-for i in range(28):
-    ddic[data[i]['id']]= data[i]['name']
-for key in ddic.keys():
-    print (key,ddic[key])
-with open('/Users/sherry/PycharmProjects/chat/2015-10-15.json', 'r') as f1:
-    d2 = json.load(f1)
-for i in range(len(d2)):
-    d2[i]['user']=ddic[d2[i]['user']]
-    print (time.ctime(float(d2[i]['ts'])),':')
-    print (d2[i]['user'],':',d2[i]['text'])
+def users_dict_from_file(user_file):
+    with open(user_file, 'r') as f:
+        user_dict_list = json.load(f)
+        username_dict = {}
+        for user in user_dict_list:
+            user_id = user['id']
+            username = user['name']
+            username_dict[user_id] = username
+    return username_dict
+
+
+# print users
+def print_users(users_dict):
+    for key, value in users_dict.items():
+        print(key, value)
+
+
+# load messages
+def messages_from_file(message_file):
+    with open(message_file, 'r') as f:
+        message_dict_list = json.load(f)
+        return message_dict_list
+
+
+# print messages
+def print_messages(message_dict_list, username_dict):
+    for message in message_dict_list:
+        username = username_dict[message['user']]
+        timestamp = float(message['ts'])
+        formatted_time = time.ctime(timestamp)
+        print(formatted_time, ':')
+        print(username, ':', message['text'])
+
+
+# run code
+user_file = '/Users/sherry/PycharmProjects/chat/users.json'
+message_file = '/Users/sherry/PycharmProjects/chat/2015-10-15.json'
+
+username_dict = users_dict_from_file(user_file)
+print_users(username_dict)
+messages = messages_from_file(message_file)
+print_messages(messages, username_dict)
